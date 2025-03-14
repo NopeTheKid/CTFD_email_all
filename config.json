@@ -1,4 +1,4 @@
 {
-    "name": "email_send_to_all",
-    "route": "/admin/email_send_to_all"
+    "name": "email_all",
+    "route": "/admin/email_all"
 }

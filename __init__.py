@@ -27,7 +27,7 @@ def load_bp(plugin_route):
         #Send email to all registered users
         users = Users.query.all()
         for user in users:
-            # TODO: send email
+            # Send email
             response = requests.post(url_for(
                 'api.users_user_emails', 
                 user_id=user.id, 
@@ -40,8 +40,8 @@ def load_bp(plugin_route):
                     'Content-Type':'application/json'
                 })
             
-            message = "Errors:\n"
-            
+            # Get erros if any
+            message = "Errors:\n"            
             if(response.status_code >= 400):
                 errors = response.json()['errors']
                 for error in errors.values():

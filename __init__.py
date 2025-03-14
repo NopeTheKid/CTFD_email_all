@@ -27,30 +27,34 @@ def load_bp(plugin_route):
         #Send email to all registered users
         users = Users.query.all()
         for user in users:
-            # Send email
-            response = requests.post(url_for(
-                'api.users_user_emails', 
-                user_id=user.id, 
-                _external=True), 
-                json={
-                    "text": text
-                },
-                headers={
-                    'Authorization': 'Token ctfd_828444f2afca7f50b7afce399d6f261df331aeaee3af1c08af4650659f3cf0fc',
-                    'Content-Type':'application/json'
-                })
-            
-            # Get erros if any
-            message = "Errors:\n"            
-            if(response.status_code >= 400):
-                errors = response.json()['errors']
-                for error in errors.values():
-                    for e in error:
-                        message+=e
-                        message+="\n"
-                message = errors
-            else:
-                message="Email sent to all users"
+            if user.verified:
+                # Send email
+                response = requests.post(url_for(
+                    'api.users_user_emails', 
+                    user_id=user.id, 
+                    _external=True), 
+                    json={
+                        "text": text
+                    },
+                    headers={
+                        'Authorization': 'Token ctfd_828444f2afca7f50b7afce399d6f261df331aeaee3af1c08af4650659f3cf0fc',
+                        'Content-Type':'application/json'
+                    })
+                
+                # Get errors if any
+                message = "Errors:\n"            
+                if(response.status_code >= 400):
+                    print("----------------------------------------------")
+                    print(errors)
+                    print("----------------------------------------------")
+                    errors = response.json()['errors']
+                    for error in errors.values():
+                        for e in error:
+                            message+=e
+                            message+="\n"
+                    message = errors
+                else:
+                    message="Email sent to all users"
 
         return render_template("test.html", message=message)    
 
